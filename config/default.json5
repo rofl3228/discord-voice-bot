@@ -1,0 +1,11 @@
+{
+  "bot": {
+    "token": "", // require to be redefine in NODE_CONFIG env variable
+    "actionPrefix": "."
+  },
+  "redis": {
+    "host": "redis-19224.c265.us-east-1-2.ec2.cloud.redislabs.com",
+    "port": 19224,
+    "password": "" // require to be redefine in NODE_CONFIG env variable
+  }
+}
