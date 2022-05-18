@@ -17,6 +17,7 @@ class PingAction extends Action {
       this.reply('Player not active now');
       return;
     }
+    await singleton.storage.musicQueues.clear(this.guildId);
     const { player, subscription } = singleton.storage.players.getPlayer(this.guildId) || {};
     player.stop(true);
     subscription.unsubscribe();
