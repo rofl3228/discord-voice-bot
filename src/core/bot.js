@@ -70,10 +70,11 @@ class Bot {
         if (!this._vipUsers[newState.id]) {
           return;
         }
+        log.debug(`Found VIP user ${newState.id}`);
         this.playFile(this._vipUsers[newState.id].file, { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'leave':
-        this.playFile('leave.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
+        this.playFile('leave.mp3', { guildId: newState.guild.id, channelId: oldState.channelId });
         break;
       default:
         log.debug(`Unprocessable event ${voiceEvent}`);
