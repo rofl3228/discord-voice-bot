@@ -7,5 +7,10 @@
     "host": "redis-19224.c265.us-east-1-2.ec2.cloud.redislabs.com",
     "port": 19224,
     "password": "" // require to be redefine in NODE_CONFIG env variable
+  },
+  "server": {
+    "selfUrl": "http://localhost:3000",
+    "port": 3000,
+    "pingTimeout": 5000
   }
 }
