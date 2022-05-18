@@ -1,9 +1,10 @@
 const config = require('config').get('bot');
 const { Client, Constants: { Events }, Intents: { FLAGS } } = require('discord.js');
 const {
-  getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource,
+  getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource, StreamType,
 } = require('@discordjs/voice');
 const path = require('path');
+const fs = require('fs');
 const singleton = require('../singleton');
 // Special case for load all commands
 const actions = require('../actions');
@@ -63,10 +64,10 @@ class Bot {
     log.info(`Handle voice event: ${voiceEvent}`);
     switch (voiceEvent) {
       case 'muted':
-        this.playFile('mute.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
+        this.playFile('dima.ogg', { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'unmuted':
-        this.playFile('unmute.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
+        this.playFile('unmute.ogg', { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'joined':
         break;
@@ -99,6 +100,16 @@ class Bot {
       subscription.unsubscribe();
     }
     const tempPlayer = createAudioPlayer({});
+    tempPlayer.on('error', (err) => log.error('Temp player error', err));
+    tempPlayer.on('stateChange', (oldState, newState) => log.debug('Temp change state: ', oldState.status, ' -> ', newState.status));
+
+    connection.subscribe(tempPlayer);
+    const resource = createAudioResource(
+      fs.createReadStream(path.join(__dirname, '../sounds', file)),
+      { inputType: StreamType.OggOpus, metadata: {} },
+    );
+    tempPlayer.play(resource);
+    await sleep(1000);
     tempPlayer.on('idle', () => {
       tempPlayer.stop(true);
       if (player) {
@@ -111,13 +122,6 @@ class Bot {
       log.debug('No waiting player, destroy connection');
       connection.destroy();
     });
-    tempPlayer.on('error', (err) => log.error('Temp player error', err));
-    tempPlayer.on('stateChange', (oldState, newState) => log.debug('Temp change state: ', oldState.status, ' -> ', newState.status));
-
-    connection.subscribe(tempPlayer);
-    await sleep(1000);
-    const resource = createAudioResource(path.join(__dirname, '../sounds', file), { metadata: {} });
-    tempPlayer.play(resource);
   }
 
   static calcEvent(oldState, newState) {
