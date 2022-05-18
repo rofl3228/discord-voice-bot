@@ -67,7 +67,7 @@ class Bot {
         this.playFile('mute.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'unmuted':
-        this.playFile('unmute.ogg', { guildId: newState.guild.id, channelId: newState.channelId });
+        this.playFile('unmute.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'joined':
         break;
