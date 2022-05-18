@@ -67,10 +67,10 @@ class Bot {
         this.playFile('unmute.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'joined':
-        joinedUser = this._vipUsers[newState.id];
-        if (joinedUser) {
-          this.playFile(joinedUser.file, { guildId: newState.guild.id, channelId: newState.channelId });
+        if (!this._vipUsers[newState.id]) {
+          return;
         }
+        this.playFile(this._vipUsers[newState.id].file, { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'leave':
         this.playFile('leave.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
