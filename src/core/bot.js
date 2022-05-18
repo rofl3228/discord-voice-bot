@@ -11,15 +11,12 @@ const actions = require('../actions');
 const HelpAction = require('../actions/help');
 const log = require('../common/logger').create({ zone: 'Bot' });
 
-// eslint-disable-next-line no-promise-executor-return
-const sleep = async (ms) => new Promise((resolve) => setTimeout(resolve, ms, true));
-
 class Bot {
   constructor(token) {
     this._token = token;
     this._bot = new Client({ intents: [FLAGS.GUILDS, FLAGS.GUILD_VOICE_STATES, FLAGS.GUILD_MESSAGES] });
     this._actions = new Map();
-    this._vipUsers = config.get(vipUsers);
+    this._vipUsers = config.get('vipUsers');
     this._bot.on(Events.VOICE_STATE_UPDATE, this.onVoiceStateUpdate.bind(this));
     this._bot.on(Events.MESSAGE_CREATE, this.onMessageCreate.bind(this));
     this._bot.on(Events.ERROR, this.errorHandler.bind(this));
@@ -70,7 +67,7 @@ class Bot {
         this.playFile('unmute.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'joined':
-        joinedUser = this._vipUsers[newState.id]
+        joinedUser = this._vipUsers[newState.id];
         if (joinedUser) {
           this.playFile(joinedUser.file, { guildId: newState.guild.id, channelId: newState.channelId });
         }
