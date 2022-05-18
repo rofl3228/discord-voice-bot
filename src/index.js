@@ -13,7 +13,7 @@ const bot = new Bot(config.get('bot.token'));
 singleton.storage.init()
   .then(() => bot.launch())
   .then(() => {
-    server.listen(config.get('server.port'));
+    server.listen(process.env.PORT);
     setInterval(() => {
       fetch(config.get('server.selfUrl'), { method: 'GET' }).catch((err) => log.error({ err }, 'FETCH_ERROR'));
     }, parseInt(config.get('server.pingTimeout'), 10));
