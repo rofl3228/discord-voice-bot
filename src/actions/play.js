@@ -32,6 +32,9 @@ class PlayAction extends Action {
         'stateChange',
         (oldState, newState) => log.debug('Connection change state: ', oldState.status, ' -> ', newState.status),
       );
+      connection.on('destroyed', () => {
+        singleton.storage.players.removePlayer(this.guildId);
+      });
     }
     log.debug(`Connection found: ${!!connection}`);
 
