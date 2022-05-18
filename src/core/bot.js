@@ -64,7 +64,7 @@ class Bot {
     log.info(`Handle voice event: ${voiceEvent}`);
     switch (voiceEvent) {
       case 'muted':
-        this.playFile('dima.ogg', { guildId: newState.guild.id, channelId: newState.channelId });
+        this.playFile('mute.mp3', { guildId: newState.guild.id, channelId: newState.channelId });
         break;
       case 'unmuted':
         this.playFile('unmute.ogg', { guildId: newState.guild.id, channelId: newState.channelId });
@@ -106,10 +106,9 @@ class Bot {
     connection.subscribe(tempPlayer);
     const resource = createAudioResource(
       fs.createReadStream(path.join(__dirname, '../sounds', file)),
-      { inputType: StreamType.OggOpus, metadata: {} },
+      { inputType: StreamType.Arbitrary, metadata: {} },
     );
     tempPlayer.play(resource);
-    await sleep(1000);
     tempPlayer.on('idle', () => {
       tempPlayer.stop(true);
       if (player) {
