@@ -28,6 +28,8 @@ class SkipAction extends Action {
     }
     const { player } = singleton.storage.players.getPlayer(this.guildId);
     player.play(createAudioResource(ytdl(url, YTDL_PRESET), { metadata: {} }));
+    const { videoDetails: { title } } = await ytdl.getInfo(url);
+    this.send(`Playing now: **${title}**`);
   }
 }
 
