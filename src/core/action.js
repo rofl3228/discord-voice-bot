@@ -39,6 +39,10 @@ class Action {
     return this._message.channel.send(options);
   }
 
+  remove() {
+    return this._message.delete();
+  }
+
   get voiceChannelId() {
     return this._message.member.voice.channelId;
   }
